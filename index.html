@@ -86,8 +86,7 @@
         // 1. OPENROUTER API KEY (Handled by GitHub Actions)
         const apiKey = "INSERT_OPENROUTER_API_KEY_HERE"; 
 
-        // 2. FORMSPREE ID (Paste your ID here, e.g., "mwkjalpz")
-        // Go to https://formspree.io/ to get one for free.
+        // 2. FORMSPREE ID (Handled by GitHub Actions)
         const FORMSPREE_ID = "YOUR_FORMSPREE_ID_HERE";
 
         const PERSONAL_INFO = {
@@ -139,7 +138,6 @@
 
         // --- OPENROUTER API ---
         const callAI = async (prompt, systemInstruction = "") => {
-            // Check for OpenRouter Placeholder
             if (!apiKey || apiKey.startsWith("INSERT_")) {
                 console.error("API Key check failed. Key value:", apiKey);
                 return "Error: API Key missing. Please check your OpenRouter configuration.";
@@ -532,8 +530,8 @@
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 
-                // Formspree Integration Check
-                if (FORMSPREE_ID === "YOUR_FORMSPREE_ID_HERE") {
+                // Formspree Integration Check (Updated check)
+                if (FORMSPREE_ID.startsWith("YOUR_")) {
                     alert("Please open the code and add your Formspree ID to make this work!");
                     return;
                 }
