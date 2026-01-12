@@ -14,7 +14,7 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -30,10 +30,11 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Inject API Key
-        # This replaces the placeholder in index.html with the secret from GitHub Settings
-        # The change happens only in the temporary runner, not in your source code.
+        # IMPORTANT: If you renamed your secret to OPENROUTER_API_KEY, change it below.
+        # If you kept the name GEMINI_API_KEY but pasted the OpenRouter key inside it, keep it as secrets.GEMINI_API_KEY.
+        # I am assuming you kept the secret name as GEMINI_API_KEY for simplicity.
         run: |
-          sed -i 's/INSERT_YOUR_GEMINI_API_KEY_HERE/${{ secrets.GEMINI_API_KEY }}/g' index.html
+          sed -i 's/INSERT_OPENROUTER_API_KEY_HERE/${{ secrets.GEMINI_API_KEY }}/g' index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -83,7 +83,7 @@
 
         // --- CONFIGURATION ---
         // IMPORTANT: INSERT YOUR KEY BELOW
-        const apiKey = "INSERT_YOUR_GEMINI_API_KEY_HERE"; 
+        const apiKey = "INSERT_OPENROUTER_API_KEY_HERE"; 
 
         const PERSONAL_INFO = {
             name: "Ben Henry Kosse",
@@ -132,40 +132,48 @@
             }
         ];
 
-        // --- GEMINI API ---
-        const callGemini = async (prompt, systemInstruction = "") => {
-            // Updated Check: Ensures we don't accidentally match the placeholder string if injection failed.
-            if (!apiKey || apiKey.startsWith("INSERT_YOUR")) {
+        // --- OPENROUTER API ---
+        const callAI = async (prompt, systemInstruction = "") => {
+            // Updated Check for OpenRouter Placeholder
+            if (!apiKey || apiKey.startsWith("INSERT_")) {
                 console.error("API Key check failed. Key value:", apiKey);
-                return "Error: API Key missing. Please open index.html and add your key.";
+                return "Error: API Key missing. Please check your OpenRouter configuration.";
             }
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const url = "https://openrouter.ai/api/v1/chat/completions";
             
+            // OpenRouter uses standard OpenAI-format
             const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined
+                "model": "google/gemini-3-flash-preview", // Free model!
+                "messages": [
+                    { "role": "system", "content": systemInstruction },
+                    { "role": "user", "content": prompt }
+                ]
             };
 
             try {
                 const response = await fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json',
+                        'HTTP-Referer': window.location.href, // Recommended by OpenRouter
+                        'X-Title': 'Ben Henry Kosse Portfolio' // Recommended by OpenRouter
+                    },
                     body: JSON.stringify(payload)
                 });
                 
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error("API Error Detail:", errorText);
-                    // DEBUGGING: This will now show the actual error message in the UI
-                    throw new Error(`Google API Error: ${response.status} (${response.statusText})`);
+                    throw new Error(`OpenRouter Error: ${response.status}`);
                 }
                 
                 const data = await response.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+                // OpenRouter response format: choices[0].message.content
+                return data.choices?.[0]?.message?.content || "No response generated.";
             } catch (error) {
-                console.error("Gemini API call failed:", error);
-                // DEBUGGING: Return the real error message to the UI
+                console.error("AI API call failed:", error);
                 return `AI Connection Error: ${error.message}`;
             }
         };
@@ -254,7 +262,7 @@
                 **Why it's cool:** [1 sentence punchline]
                 `;
 
-                const result = await callGemini(prompt);
+                const result = await callAI(prompt);
                 setIdea(result);
                 setLoading(false);
             };
@@ -339,7 +347,7 @@
                 4. If asked about something not in the data, say you don't know but suggest contacting Ben directly.
                 `;
 
-                const responseText = await callGemini(userMsg, context);
+                const responseText = await callAI(userMsg, context);
 
                 setIsTyping(false);
                 setMessages(prev => [...prev, { role: 'assistant', text: responseText }]);
