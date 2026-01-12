@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>Ben Henry Kosse - Portfolio</title>
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
+
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
@@ -21,21 +22,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0a0a0a; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+        }
+
         /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #555; }
-        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
         /* Animations */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in { animation: fadeIn 0.7s ease-out forwards; }
-        
-        @keyframes pulse-glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-        .animate-pulse-glow { animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.7s ease-out forwards;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
     </style>
 </head>
+
 <body class="text-gray-100 selection:bg-blue-500/30">
     <div id="root"></div>
 
@@ -44,16 +88,16 @@
 
         // --- ICONS (SVG Components) ---
         const Icon = ({ path, size = 20, className = "" }) => (
-            <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width={size} 
-                height={size} 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={size}
+                height={size}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className={className}
             >
                 {path}
@@ -61,29 +105,29 @@
         );
 
         const Icons = {
-            Github: (props) => <Icon {...props} path={<><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 6 3 6 6-6 6-6c0-3.6-2-5.4-4-6.3a4.4 4.4 0 0 0-.6-2.2s-1.2-.4-4 1.5c-1-.3-2.3-.3-3.5 0-2.5-1.9-4-1.5-4-1.5a4.4 4.4 0 0 0-.6 2.2c-2 .9-4 2.7-4 6.3 0 3.8 3 6.3 6 6-1 .6-1.5 1.7-1.5 2.5V22"/><path d="M9 9l3 3-3 3"/><path d="M13 13l3-3-3-3"/></>} />, // Simplification for Github logo
-            Linkedin: (props) => <Icon {...props} path={<><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></>} />,
-            Mail: (props) => <Icon {...props} path={<><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></>} />,
-            Cpu: (props) => <Icon {...props} path={<><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></>} />,
-            Code2: (props) => <Icon {...props} path={<><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></>} />,
-            Terminal: (props) => <Icon {...props} path={<><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></>} />,
-            Zap: (props) => <Icon {...props} path={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>} />,
-            User: (props) => <Icon {...props} path={<><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>} />,
-            Briefcase: (props) => <Icon {...props} path={<><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></>} />,
-            Send: (props) => <Icon {...props} path={<><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></>} />,
-            ExternalLink: (props) => <Icon {...props} path={<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></>} />,
-            ChevronRight: (props) => <Icon {...props} path={<path d="m9 18 6-6-6-6"/>} />,
-            Sparkles: (props) => <Icon {...props} path={<><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 9v4"/><path d="M20 3v4"/></>} />,
-            MessageSquare: (props) => <Icon {...props} path={<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>} />,
-            Bot: (props) => <Icon {...props} path={<><rect width="18" height="10" x="3" y="11" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" x2="8" y1="16" y2="16"/><line x1="16" x2="16" y1="16" y2="16"/></>} />,
-            Loader2: (props) => <Icon {...props} className={`animate-spin ${props.className || ""}`} path={<path d="M21 12a9 9 0 1 1-6.219-8.56"/>} />,
-            XCircle: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></>} />
+            Github: (props) => <Icon {...props} path={<><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 6 3 6 6-6 6-6c0-3.6-2-5.4-4-6.3a4.4 4.4 0 0 0-.6-2.2s-1.2-.4-4 1.5c-1-.3-2.3-.3-3.5 0-2.5-1.9-4-1.5-4-1.5a4.4 4.4 0 0 0-.6 2.2c-2 .9-4 2.7-4 6.3 0 3.8 3 6.3 6 6-1 .6-1.5 1.7-1.5 2.5V22" /><path d="M9 9l3 3-3 3" /><path d="M13 13l3-3-3-3" /></>} />, // Simplification for Github logo
+            Linkedin: (props) => <Icon {...props} path={<><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></>} />,
+            Mail: (props) => <Icon {...props} path={<><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></>} />,
+            Cpu: (props) => <Icon {...props} path={<><rect x="4" y="4" width="16" height="16" rx="2" /><rect x="9" y="9" width="6" height="6" /><path d="M15 2v2" /><path d="M15 20v2" /><path d="M2 15h2" /><path d="M2 9h2" /><path d="M20 15h2" /><path d="M20 9h2" /><path d="M9 2v2" /><path d="M9 20v2" /></>} />,
+            Code2: (props) => <Icon {...props} path={<><path d="m18 16 4-4-4-4" /><path d="m6 8-4 4 4 4" /><path d="m14.5 4-5 16" /></>} />,
+            Terminal: (props) => <Icon {...props} path={<><polyline points="4 17 10 11 4 5" /><line x1="12" x2="20" y1="19" y2="19" /></>} />,
+            Zap: (props) => <Icon {...props} path={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />} />,
+            User: (props) => <Icon {...props} path={<><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></>} />,
+            Briefcase: (props) => <Icon {...props} path={<><rect width="20" height="14" x="2" y="7" rx="2" ry="2" /><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" /></>} />,
+            Send: (props) => <Icon {...props} path={<><path d="m22 2-7 20-4-9-9-4Z" /><path d="M22 2 11 13" /></>} />,
+            ExternalLink: (props) => <Icon {...props} path={<><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" x2="21" y1="14" y2="3" /></>} />,
+            ChevronRight: (props) => <Icon {...props} path={<path d="m9 18 6-6-6-6" />} />,
+            Sparkles: (props) => <Icon {...props} path={<><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" /><path d="M5 3v4" /><path d="M9 9v4" /><path d="M20 3v4" /></>} />,
+            MessageSquare: (props) => <Icon {...props} path={<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />} />,
+            Bot: (props) => <Icon {...props} path={<><rect width="18" height="10" x="3" y="11" rx="2" /><circle cx="12" cy="5" r="2" /><path d="M12 7v4" /><line x1="8" x2="8" y1="16" y2="16" /><line x1="16" x2="16" y1="16" y2="16" /></>} />,
+            Loader2: (props) => <Icon {...props} className={`animate-spin ${props.className || ""}`} path={<path d="M21 12a9 9 0 1 1-6.219-8.56" />} />,
+            XCircle: (props) => <Icon {...props} path={<><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" /></>} />
         };
 
 
         // --- CONFIGURATION ---
         // IMPORTANT: INSERT YOUR KEY BELOW
-        const apiKey = "INSERT_YOUR_GEMINI_API_KEY_HERE"; 
+        const apiKey = "INSERT_YOUR_GEMINI_API_KEY_HERE";
 
         const PERSONAL_INFO = {
             name: "Ben Henry Kosse",
@@ -141,7 +185,7 @@
                 return "Error: API Key missing. Please open index.html and add your key.";
             }
 
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text: prompt }] }],
                 systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }] } : undefined
@@ -167,11 +211,10 @@
         const NavItem = ({ active, onClick, icon: IconComponent, label }) => (
             <button
                 onClick={onClick}
-                className={`group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 md:flex-col md:gap-1 md:px-6 md:py-4 ${
-                active 
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20" 
-                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                }`}
+                className={`group flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-300 md:flex-col md:gap-1 md:px-6 md:py-4 ${active
+                        ? "bg-blue-600 text-white shadow-lg shadow-blue-900/20"
+                        : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                    }`}
             >
                 <IconComponent size={20} className={`transition-transform duration-300 ${active ? "scale-110" : "group-hover:scale-110"}`} />
                 <span className="text-xs font-medium">{label}</span>
@@ -206,7 +249,7 @@
                             )}
                         </div>
                     </div>
-                    
+
                     <h3 className="mt-4 text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{project.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-gray-400">{project.description}</p>
                 </div>
@@ -214,7 +257,7 @@
                 <div className="mt-6 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                         <span key={tag} className="rounded-full bg-gray-900 px-3 py-1 text-xs font-medium text-gray-300 border border-gray-700">
-                        {tag}
+                            {tag}
                         </span>
                     ))}
                 </div>
@@ -253,40 +296,40 @@
 
             return (
                 <div className="mt-12 rounded-2xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-gray-900/50 p-8 backdrop-blur-sm">
-                <div className="flex items-center gap-3 mb-4">
-                    <Icons.Sparkles className="text-purple-400" />
-                    <h3 className="text-xl font-bold text-white">Project Brainstormer AI</h3>
-                </div>
-                <p className="text-gray-300 mb-6">
-                    Curious what I could build for your industry? Enter a topic (e.g., "Sustainable Farming", "Music", "Logistics") and I'll generate a project concept using my specific tech stack.
-                </p>
-                
-                <div className="flex gap-2 mb-6">
-                    <input 
-                    type="text" 
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    placeholder="Enter a topic..." 
-                    className="flex-1 rounded-lg bg-gray-950 border border-purple-500/30 p-3 text-white placeholder-gray-500 focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400 transition-all"
-                    />
-                    <button 
-                    onClick={handleBrainstorm}
-                    disabled={loading || !topic}
-                    className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                    >
-                    {loading ? <Icons.Loader2 size={18} /> : <><Icons.Sparkles size={18} /> Generate</>}
-                    </button>
-                </div>
-
-                {idea && (
-                    <div className="animate-fade-in rounded-lg bg-gray-950/50 border border-purple-500/20 p-6">
-                    {idea.split('\n').map((line, i) => (
-                        <p key={i} className={line.startsWith('**') ? "font-bold text-purple-200 mt-2" : "text-gray-300"}>
-                            {line.replace(/\*\*/g, '')}
-                        </p>
-                    ))}
+                    <div className="flex items-center gap-3 mb-4">
+                        <Icons.Sparkles className="text-purple-400" />
+                        <h3 className="text-xl font-bold text-white">Project Brainstormer AI</h3>
                     </div>
-                )}
+                    <p className="text-gray-300 mb-6">
+                        Curious what I could build for your industry? Enter a topic (e.g., "Sustainable Farming", "Music", "Logistics") and I'll generate a project concept using my specific tech stack.
+                    </p>
+
+                    <div className="flex gap-2 mb-6">
+                        <input
+                            type="text"
+                            value={topic}
+                            onChange={(e) => setTopic(e.target.value)}
+                            placeholder="Enter a topic..."
+                            className="flex-1 rounded-lg bg-gray-950 border border-purple-500/30 p-3 text-white placeholder-gray-500 focus:border-purple-400 focus:outline-none focus:ring-1 focus:ring-purple-400 transition-all"
+                        />
+                        <button
+                            onClick={handleBrainstorm}
+                            disabled={loading || !topic}
+                            className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-2 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                            {loading ? <Icons.Loader2 size={18} /> : <><Icons.Sparkles size={18} /> Generate</>}
+                        </button>
+                    </div>
+
+                    {idea && (
+                        <div className="animate-fade-in rounded-lg bg-gray-950/50 border border-purple-500/20 p-6">
+                            {idea.split('\n').map((line, i) => (
+                                <p key={i} className={line.startsWith('**') ? "font-bold text-purple-200 mt-2" : "text-gray-300"}>
+                                    {line.replace(/\*\*/g, '')}
+                                </p>
+                            ))}
+                        </div>
+                    )}
                 </div>
             );
         };
@@ -339,71 +382,70 @@
 
             return (
                 <React.Fragment>
-                <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/30 transition-transform hover:scale-110 hover:bg-blue-500"
-                >
-                    {isOpen ? <Icons.XCircle size={28} /> : <Icons.MessageSquare size={28} />}
-                </button>
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="fixed bottom-24 right-4 md:bottom-8 md:right-8 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg shadow-blue-600/30 transition-transform hover:scale-110 hover:bg-blue-500"
+                    >
+                        {isOpen ? <Icons.XCircle size={28} /> : <Icons.MessageSquare size={28} />}
+                    </button>
 
-                {isOpen && (
-                    <div className="fixed bottom-40 right-4 md:bottom-24 md:right-8 z-50 w-[90vw] md:w-96 rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl animate-fade-in flex flex-col overflow-hidden max-h-[500px]">
-                    <div className="flex items-center gap-3 bg-gray-800 p-4 border-b border-gray-700">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600/20 text-blue-400">
-                        <Icons.Bot size={20} />
-                        </div>
-                        <div>
-                        <h3 className="font-bold text-white">Ben's AI Twin</h3>
-                        <p className="text-xs text-green-400 flex items-center gap-1">
-                            <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" /> Online
-                        </p>
-                        </div>
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900/95">
-                        {messages.map((msg, idx) => (
-                        <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                            <div 
-                            className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
-                                msg.role === 'user' 
-                                ? 'bg-blue-600 text-white rounded-br-none' 
-                                : 'bg-gray-800 text-gray-200 rounded-bl-none'
-                            }`}
-                            >
-                            {msg.text}
+                    {isOpen && (
+                        <div className="fixed bottom-40 right-4 md:bottom-24 md:right-8 z-50 w-[90vw] md:w-96 rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl animate-fade-in flex flex-col overflow-hidden max-h-[500px]">
+                            <div className="flex items-center gap-3 bg-gray-800 p-4 border-b border-gray-700">
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600/20 text-blue-400">
+                                    <Icons.Bot size={20} />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-white">Ben's AI Twin</h3>
+                                    <p className="text-xs text-green-400 flex items-center gap-1">
+                                        <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse-glow" /> Online
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        ))}
-                        {isTyping && (
-                        <div className="flex justify-start">
-                            <div className="bg-gray-800 rounded-2xl rounded-bl-none px-4 py-2 flex items-center gap-1">
-                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
-                            </div>
-                        </div>
-                        )}
-                        <div ref={messagesEndRef} />
-                    </div>
 
-                    <form onSubmit={handleSend} className="p-3 bg-gray-800 border-t border-gray-700 flex gap-2">
-                        <input 
-                        type="text" 
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Ask about my skills..."
-                        className="flex-1 bg-gray-900 text-white text-sm rounded-lg px-3 border border-gray-700 focus:outline-none focus:border-blue-500"
-                        />
-                        <button 
-                        type="submit" 
-                        disabled={!input || isTyping}
-                        className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                        <Icons.Send size={18} />
-                        </button>
-                    </form>
-                    </div>
-                )}
+                            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-900/95">
+                                {messages.map((msg, idx) => (
+                                    <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div
+                                            className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${msg.role === 'user'
+                                                    ? 'bg-blue-600 text-white rounded-br-none'
+                                                    : 'bg-gray-800 text-gray-200 rounded-bl-none'
+                                                }`}
+                                        >
+                                            {msg.text}
+                                        </div>
+                                    </div>
+                                ))}
+                                {isTyping && (
+                                    <div className="flex justify-start">
+                                        <div className="bg-gray-800 rounded-2xl rounded-bl-none px-4 py-2 flex items-center gap-1">
+                                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                                            <span className="h-1.5 w-1.5 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                                        </div>
+                                    </div>
+                                )}
+                                <div ref={messagesEndRef} />
+                            </div>
+
+                            <form onSubmit={handleSend} className="p-3 bg-gray-800 border-t border-gray-700 flex gap-2">
+                                <input
+                                    type="text"
+                                    value={input}
+                                    onChange={(e) => setInput(e.target.value)}
+                                    placeholder="Ask about my skills..."
+                                    className="flex-1 bg-gray-900 text-white text-sm rounded-lg px-3 border border-gray-700 focus:outline-none focus:border-blue-500"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={!input || isTyping}
+                                    className="bg-blue-600 hover:bg-blue-500 text-white p-2 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    <Icons.Send size={18} />
+                                </button>
+                            </form>
+                        </div>
+                    )}
                 </React.Fragment>
             );
         };
@@ -411,39 +453,39 @@
         const HomeSection = ({ setPage }) => (
             <div className="flex min-h-[80vh] flex-col justify-center animate-fade-in">
                 <div className="space-y-6 max-w-3xl">
-                <div className="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-300 backdrop-blur-sm">
-                    <span className="mr-2 flex h-2 w-2 relative">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                    </span>
-                    Open to new opportunities
-                </div>
-                
-                <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl">
-                    Hello, I'm <br/>
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                    {PERSONAL_INFO.name}
-                    </span>
-                </h1>
-                
-                <p className="max-w-xl text-lg text-gray-400 md:text-xl leading-relaxed">
-                    {PERSONAL_INFO.tagline} Student of {PERSONAL_INFO.role} at <span className="text-white font-medium">{PERSONAL_INFO.university}</span>.
-                </p>
-                
-                <div className="flex flex-wrap gap-4 pt-4">
-                    <button 
-                    onClick={() => setPage('projects')}
-                    className="flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3 font-semibold text-white transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/25"
-                    >
-                    View Projects <Icons.ChevronRight size={18} />
-                    </button>
-                    <button 
-                    onClick={() => setPage('contact')}
-                    className="rounded-full border border-gray-600 bg-transparent px-8 py-3 font-semibold text-white transition-all hover:border-gray-400 hover:bg-gray-800"
-                    >
-                    Contact Me
-                    </button>
-                </div>
+                    <div className="inline-flex items-center rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-300 backdrop-blur-sm">
+                        <span className="mr-2 flex h-2 w-2 relative">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                        </span>
+                        Open to new opportunities
+                    </div>
+
+                    <h1 className="text-5xl font-bold tracking-tight text-white md:text-7xl">
+                        Hello, I'm <br />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                            {PERSONAL_INFO.name}
+                        </span>
+                    </h1>
+
+                    <p className="max-w-xl text-lg text-gray-400 md:text-xl leading-relaxed">
+                        {PERSONAL_INFO.tagline} Student of {PERSONAL_INFO.role} at <span className="text-white font-medium">{PERSONAL_INFO.university}</span>.
+                    </p>
+
+                    <div className="flex flex-wrap gap-4 pt-4">
+                        <button
+                            onClick={() => setPage('projects')}
+                            className="flex items-center gap-2 rounded-full bg-blue-600 px-8 py-3 font-semibold text-white transition-all hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/25"
+                        >
+                            View Projects <Icons.ChevronRight size={18} />
+                        </button>
+                        <button
+                            onClick={() => setPage('contact')}
+                            className="rounded-full border border-gray-600 bg-transparent px-8 py-3 font-semibold text-white transition-all hover:border-gray-400 hover:bg-gray-800"
+                        >
+                            Contact Me
+                        </button>
+                    </div>
                 </div>
             </div>
         );
@@ -451,39 +493,39 @@
         const AboutSection = () => (
             <div className="animate-fade-in space-y-12 py-8">
                 <div className="grid gap-12 md:grid-cols-2 items-start">
-                <div className="space-y-6">
-                    <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                    <Icons.User className="text-blue-500" /> About Me
-                    </h2>
-                    <div className="space-y-4 text-gray-300 leading-relaxed">
-                    <p>{PERSONAL_INFO.bio}</p>
-                    <p>
-                        My academic journey at <strong className="text-white">RWTH Aachen</strong> has provided me with a strong foundation in electrical engineering principles, while my personal projects allow me to explore modern software stacks.
-                    </p>
-                    </div>
-                </div>
-
-                <div className="rounded-2xl border border-gray-700 bg-gray-800/30 p-6 md:p-8 backdrop-blur-sm">
-                    <h3 className="mb-6 text-xl font-bold text-white flex items-center gap-2">
-                        <Icons.Cpu size={20} className="text-purple-400"/> Technical Arsenal
-                    </h3>
                     <div className="space-y-6">
-                    {SKILLS.map((skillGroup) => (
-                        <div key={skillGroup.category}>
-                        <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">
-                            {skillGroup.category}
-                        </h4>
-                        <div className="flex flex-wrap gap-2">
-                            {skillGroup.items.map((skill) => (
-                            <span key={skill} className="cursor-default rounded-md bg-gray-700/50 px-3 py-1.5 text-sm text-gray-200 transition-colors hover:bg-blue-500/20 hover:text-blue-300">
-                                {skill}
-                            </span>
+                        <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                            <Icons.User className="text-blue-500" /> About Me
+                        </h2>
+                        <div className="space-y-4 text-gray-300 leading-relaxed">
+                            <p>{PERSONAL_INFO.bio}</p>
+                            <p>
+                                My academic journey at <strong className="text-white">RWTH Aachen</strong> has provided me with a strong foundation in electrical engineering principles, while my personal projects allow me to explore modern software stacks.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-gray-700 bg-gray-800/30 p-6 md:p-8 backdrop-blur-sm">
+                        <h3 className="mb-6 text-xl font-bold text-white flex items-center gap-2">
+                            <Icons.Cpu size={20} className="text-purple-400" /> Technical Arsenal
+                        </h3>
+                        <div className="space-y-6">
+                            {SKILLS.map((skillGroup) => (
+                                <div key={skillGroup.category}>
+                                    <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-gray-500">
+                                        {skillGroup.category}
+                                    </h4>
+                                    <div className="flex flex-wrap gap-2">
+                                        {skillGroup.items.map((skill) => (
+                                            <span key={skill} className="cursor-default rounded-md bg-gray-700/50 px-3 py-1.5 text-sm text-gray-200 transition-colors hover:bg-blue-500/20 hover:text-blue-300">
+                                                {skill}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
                             ))}
                         </div>
-                        </div>
-                    ))}
                     </div>
-                </div>
                 </div>
             </div>
         );
@@ -491,16 +533,16 @@
         const ProjectsSection = () => (
             <div className="animate-fade-in py-8">
                 <div className="mb-10">
-                <h2 className="text-3xl font-bold text-white flex items-center gap-3">
-                    <Icons.Briefcase className="text-blue-500" /> Featured Projects
-                </h2>
-                <p className="mt-2 text-gray-400">A selection of my work in embedded systems and software.</p>
+                    <h2 className="text-3xl font-bold text-white flex items-center gap-3">
+                        <Icons.Briefcase className="text-blue-500" /> Featured Projects
+                    </h2>
+                    <p className="mt-2 text-gray-400">A selection of my work in embedded systems and software.</p>
                 </div>
-                
+
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-12">
-                {PROJECTS.map((project) => (
-                    <ProjectCard key={project.id} project={project} />
-                ))}
+                    {PROJECTS.map((project) => (
+                        <ProjectCard key={project.id} project={project} />
+                    ))}
                 </div>
 
                 <ProjectBrainstormer />
@@ -522,10 +564,10 @@
             return (
                 <div className="animate-fade-in py-8 max-w-2xl mx-auto">
                     <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-white mb-4">Let's Connect</h2>
-                    <p className="text-gray-400">
-                        Have a project in mind or just want to chat about engineering? Drop me a message.
-                    </p>
+                        <h2 className="text-3xl font-bold text-white mb-4">Let's Connect</h2>
+                        <p className="text-gray-400">
+                            Have a project in mind or just want to chat about engineering? Drop me a message.
+                        </p>
                     </div>
 
                     <div className="bg-gray-800/50 p-8 rounded-2xl border border-gray-700 backdrop-blur-sm shadow-xl">
@@ -553,9 +595,9 @@
                                     <label className="text-sm font-medium text-gray-300">Message</label>
                                     <textarea required rows={4} className="w-full rounded-lg bg-gray-900/50 border border-gray-700 p-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 transition-all" placeholder="Tell me about your project..."></textarea>
                                 </div>
-                                <button 
+                                <button
                                     disabled={status === 'sending'}
-                                    type="submit" 
+                                    type="submit"
                                     className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition-all hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                 >
                                     {status === 'sending' ? (
@@ -567,7 +609,7 @@
                             </form>
                         )}
                     </div>
-                    
+
                     <div className="mt-12 flex justify-center gap-6">
                         <SocialButton href={PERSONAL_INFO.social.github} icon={Icons.Github} label="GitHub" />
                         <SocialButton href={PERSONAL_INFO.social.linkedin} icon={Icons.Linkedin} label="LinkedIn" />
@@ -598,15 +640,15 @@
                     <div className="relative mx-auto max-w-6xl px-4 pb-24 pt-8 md:px-8 md:pb-8 md:pt-12">
                         {/* Header */}
                         <header className="mb-12 flex items-center justify-between">
-                            <div 
-                                className="flex items-center gap-4 cursor-pointer" 
+                            <div
+                                className="flex items-center gap-4 cursor-pointer"
                                 onClick={() => setActiveTab('home')}
                             >
                                 <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-gray-700 bg-gray-800 shadow-lg">
                                     {!imageError ? (
-                                        <img 
-                                            src="assets/IMG_2191.JPG" 
-                                            alt="Profile" 
+                                        <img
+                                            src="assets/IMG_2191.JPG"
+                                            alt="Profile"
                                             className="h-full w-full object-cover"
                                             onError={() => setImageError(true)}
                                         />
@@ -621,7 +663,7 @@
                                     <p className="text-xs text-gray-400">Personal Portfolio</p>
                                 </div>
                             </div>
-                            
+
                             {/* Desktop Nav */}
                             <div className="hidden md:flex items-center gap-4 rounded-full border border-gray-700 bg-gray-800/50 p-1.5 backdrop-blur-md">
                                 <button onClick={() => setActiveTab('home')} className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${activeTab === 'home' ? 'bg-gray-700 text-white shadow-md' : 'text-gray-400 hover:text-white'}`}>Home</button>
@@ -660,4 +702,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>
