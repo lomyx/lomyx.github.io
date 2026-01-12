@@ -1,20 +1,15 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger on push to either main or master branch
   push:
     branches: [ "main", "master" ]
-  
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Grant GITHUB_TOKEN the permissions required to make a Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment
 concurrency:
   group: "pages"
   cancel-in-progress: false
@@ -29,12 +24,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Inject API Key
-        # IMPORTANT: If you renamed your secret to OPENROUTER_API_KEY, change it below.
-        # If you kept the name GEMINI_API_KEY but pasted the OpenRouter key inside it, keep it as secrets.GEMINI_API_KEY.
-        # I am assuming you kept the secret name as GEMINI_API_KEY for simplicity.
+      - name: Inject Secrets
+        # This replaces BOTH the API Key and the Formspree ID placeholders
         run: |
           sed -i 's/INSERT_OPENROUTER_API_KEY_HERE/${{ secrets.GEMINI_API_KEY }}/g' index.html
+          sed -i 's/YOUR_FORMSPREE_ID_HERE/${{ secrets.FORMSPREE_ID }}/g' index.html
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -42,7 +36,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: '.'
 
       - name: Deploy to GitHub Pages
