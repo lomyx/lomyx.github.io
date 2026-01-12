@@ -134,7 +134,10 @@
 
         // --- GEMINI API ---
         const callGemini = async (prompt, systemInstruction = "") => {
-            if (!apiKey || apiKey === "INSERT_YOUR_GEMINI_API_KEY_HERE") {
+            // FIX: We check if the key is empty OR if it starts with "INSERT".
+            // Since the GitHub Action replaces the FULL string "INSERT_YOUR_GEMINI_API_KEY_HERE",
+            // this shorter check will NOT be replaced, allowing it to work correctly.
+            if (!apiKey || apiKey.startsWith("INSERT_YOUR")) {
                 return "Error: API Key missing. Please open index.html and add your key.";
             }
 
@@ -291,7 +294,7 @@
         const AIChatWidget = () => {
             const [isOpen, setIsOpen] = useState(false);
             const [messages, setMessages] = useState([
-                { role: 'assistant', text: "Hi! I'm Ben's AI Twin. Ask me anything about his skills, projects, or background;)" }
+                { role: 'assistant', text: "Hi! I'm Ben's AI Twin. Ask me anything about his skills, projects, or background." }
             ]);
             const [input, setInput] = useState("");
             const [isTyping, setIsTyping] = useState(false);
